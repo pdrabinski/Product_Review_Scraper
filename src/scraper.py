@@ -9,9 +9,13 @@ import time
 
 # url = 'https://www.backcountry.com/the-north-face-kilowatt-varsity-jacket-mens?skid=TNF032G-ASPGREGRE-S&ti=UExQIENhdDpNZW4ncyBDbGltYiBKYWNrZXRzOjg6MTE6YmMtbWVucy1jbGltYi1qYWNrZXRz'
 
-url = 'https://www.backcountry.com/the-north-face-apex-bionic-jacket-mens?skid=TNF02HH-URBNAVNV-S&ti=UExQIENhdDpNZW4ncyBDbGltYiBKYWNrZXRzOjE6ODpiYy1tZW5zLWNsaW1iLWphY2tldHM='
+url = 'https://www.backcountry.com/marmot-tullus-down-jacket-mens?skid=MAR00XO-STOCLO-S&ti=UExQIENhdDpNZW4ncyBDbGltYiBKYWNrZXRzOjE6OTpiYy1tZW5zLWNsaW1iLWphY2tldHM='
 
 def get_reviews(url, reviews_filename, products_filename):
+    """
+    Gathers reviews and product info from url and writes the results to 2 csv's.
+    """
+
     driver = webdriver.Firefox()
     driver.get(url)
     response = driver.page_source
@@ -19,11 +23,7 @@ def get_reviews(url, reviews_filename, products_filename):
 
     soup = BeautifulSoup(response, 'html.parser')
 
-    product_name = soup.find('h1', attrs={'class': 'product-name'})
-    product_name = product_name.text.strip()
-    brand_name = product_name.split()[0]
-    product_name = " ".join(product_name.split(" ")[1:])
-
+    """Get number of ratings and the average rating"""
     five_rating = soup.find('a', attrs={'class': 'js-five-star-rank'})
     if five_rating == None:
         return
@@ -37,21 +37,39 @@ def get_reviews(url, reviews_filename, products_filename):
     one_rating = soup.find('a', attrs={'class': 'js-one-star-rank'})
     one_rating = int(one_rating.text.strip())
     total_ratings = five_rating + four_rating + three_rating + two_rating + one_rating
-    if total_ratings == 0:
+    if total_ratings < 5:
         return
     avg_rating = float(five_rating * 5 + four_rating * 4 + three_rating * 3 + two_rating * 2 + one_rating * 1) / (five_rating + four_rating + three_rating + two_rating + one_rating)
     avg_rating = round(avg_rating,3)
 
+    """Get Brand name and Product name"""
+    product = soup.find('h1', attrs={'class': 'product-name'})
+    brand_name = product.find('span', attrs={'class':'qa-brand-name'})
+    brand_name = brand_name.text.strip()
+    product_name = product.text.strip()
+    brand_name_n_words = len(brand_name.split())
+    product_name = " ".join(product_name.split(" ")[brand_name_n_words:])
+
+    """Get product price"""
+    price = soup.find('span', attrs={'class': 'product-pricing__retail'})
+    if price == None:
+        price = soup.find('span', attrs={'class': 'product-pricing__inactive'})
+    price = float(price.text.strip()[1:])
+    print(price)
+
+    """Add to product.csv"""
     with open(products_filename,'a', newline='') as pf:
         writer = csv.writer(pf, delimiter=',',
                             quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
-        writer.writerow([brand_name,product_name,avg_rating, five_rating,four_rating,three_rating,two_rating,one_rating])
+        writer.writerow([brand_name,product_name,price,avg_rating, five_rating,four_rating,three_rating,two_rating,one_rating])
 
+    """Get all reviews for product"""
     reviews = soup.find_all('article', attrs={'class': 'js-pdp-wall-masonry-item'})
     with open(reviews_filename,'a', newline='') as f:
         writer = csv.writer(f, delimiter=',',
                                 quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
 
+        """Get user review, associated info, and write to reviews.csv"""
         for review in reviews:
             user_review = review.get('data-description')
             if len(user_review) > 0:
@@ -70,4 +88,4 @@ if __name__ == '__main__':
     start = time.time()
     get_reviews(url, '../data/test_reviews.csv', '../data/test_products.csv')
     total_time = time.time() - start
-    print(total_time)
+    print(total_time, "sec")
