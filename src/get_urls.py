@@ -35,10 +35,10 @@ def get_product_links(base_url, url_suffix,n_pages, reviews_filename, products_f
 if __name__ == '__main__':
     #url = 'https://www.backcountry.com/mens-climb-jackets?p=brand%3AArc%27teryx%7Cbrand%3AMarmot%7Cbrand%3APatagonia%7Cbrand%3AOutdoor%5C+Research%7Cbrand%3AThe%5C+North%5C+Face&page='
 
-    url = 'https://www.backcountry.com/marmot?show=all&p=reviewAverage%3A%5B1+TO+*%5D&page='
+    url = 'https://www.backcountry.com/arcteryx?show=all&p=reviewAverage%3A%5B1+TO+*%5D&page='
 
     add_on = '&nf=1'
-    n_pages = 11
-    products_filename = '../data/marmot_products.csv'
-    reviews_filename = '../data/marmot_reviews.csv'
+    n_pages = 9
+    products_filename = '../data/products/arcteryx_products.csv'
+    reviews_filename = '../data/reviews/arcteryx_reviews.csv'
     get_product_links(url, add_on, n_pages, reviews_filename, products_filename)
