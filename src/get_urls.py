@@ -8,7 +8,7 @@ from scraper import get_reviews
 
 def get_product_links(base_url, url_suffix,n_pages, reviews_filename, products_filename):
 
-    """Crawl through product gallery pages and get links for products. Parser only parse a tags. Might be able to remove product link list."""
+    """Parse through product gallery pages and get links for products. Parser only parse a tags. Might be able to remove product link list."""
 
     only_a_tags = SoupStrainer('a')
 
@@ -29,12 +29,9 @@ def get_product_links(base_url, url_suffix,n_pages, reviews_filename, products_f
             print(j, "Products")
             j += 1
         print("Page {} done, {} links".format(i+1, j))
-
     print(j, "Product Links")
 
 if __name__ == '__main__':
-    #url = 'https://www.backcountry.com/mens-climb-jackets?p=brand%3AArc%27teryx%7Cbrand%3AMarmot%7Cbrand%3APatagonia%7Cbrand%3AOutdoor%5C+Research%7Cbrand%3AThe%5C+North%5C+Face&page='
-
     url = 'https://www.backcountry.com/arcteryx?show=all&p=reviewAverage%3A%5B1+TO+*%5D&page='
 
     add_on = '&nf=1'

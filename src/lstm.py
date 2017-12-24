@@ -63,8 +63,9 @@ if __name__ == '__main__':
         brand = df['Brand'].values[1]
         inputMatrices = df['Review'].apply(lambda x: getSentenceMatrix(x))
         print(brand, 'inputMatrices done...')
-        sentiment = inputMatrices.apply(lambda x: sess.run(prediction, {input_data: x}))
+        sentiment = inputMatrices.apply(lambda x: sess.run(prediction, {input_data: x})[0])
+        result = [1 if s[0] > s[1] else 0 for s in sentiment]
         print(brand, 'sentiment prediction done...')
-        df['Sentiment'] = sentiment
+        df['Sentiment'] = result
         df.to_pickle(d + 'sentiment/' + brand + '_sentiment' + '.p')
         print(brand, 'done...')
