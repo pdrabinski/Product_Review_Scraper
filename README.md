@@ -4,4 +4,4 @@ This is my first full project. The primary goal was to practice web scraping and
 
 ### Results
 
-<img src='images/Results.png' width=350/>
+<img src='images/Results.png' width=450/>
