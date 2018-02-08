@@ -32,7 +32,7 @@ def get_product_links(base_url, url_suffix,n_pages, reviews_filename, products_f
     print(j, "Product Links")
 
 if __name__ == '__main__':
-    url = 'https://www.backcountry.com/arcteryx?show=all&p=reviewAverage%3A%5B1+TO+*%5D&page='
+    url = ""
 
     add_on = '&nf=1'
     n_pages = 9

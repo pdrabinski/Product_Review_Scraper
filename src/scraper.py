@@ -4,13 +4,6 @@ from selenium import webdriver
 from dateutil.parser import parse
 import time
 
-
-# url = 'https://www.backcountry.com/patagonia-fjord-flannel-shirt-long-sleeve-mens?ti=UDEzV2lkZ2V0OlAxM24gUHJvZHVjdHM6MToxOg=='
-
-# url = 'https://www.backcountry.com/the-north-face-kilowatt-varsity-jacket-mens?skid=TNF032G-ASPGREGRE-S&ti=UExQIENhdDpNZW4ncyBDbGltYiBKYWNrZXRzOjg6MTE6YmMtbWVucy1jbGltYi1qYWNrZXRz'
-
-url = 'https://www.backcountry.com/marmot-tullus-down-jacket-mens?skid=MAR00XO-STOCLO-S&ti=UExQIENhdDpNZW4ncyBDbGltYiBKYWNrZXRzOjE6OTpiYy1tZW5zLWNsaW1iLWphY2tldHM='
-
 def get_reviews(url, reviews_filename, products_filename):
     """
     Gathers reviews and product info from url and writes the results to 2 csv's.
